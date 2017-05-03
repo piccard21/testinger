@@ -10,7 +10,7 @@ use App\Article;
 class ArticleTest extends TestCase
 {
     use DatabaseTransactions;
-
+// php artisan migrate --database=sqlite_testing
 
     /** @test **/
     public function it_fetches_trending_articles()
