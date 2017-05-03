@@ -13,12 +13,14 @@ class ProductTest extends TestCase
         $this->product =new Product('Fa', "12");
     }
 
-    public function testProductHasName()
-    { 
+    /** @test **/
+    public function a_product_has_a_name()
+    {
         $this->assertEquals('Fa', $this->product->name());
     }
 
-    public function testProductHasPrice()
+    // public function testProductHasPrice()
+    public function test_a_product_has_a_name_price()
     {
         $this->assertEquals('12', $this->product->price());
     }
