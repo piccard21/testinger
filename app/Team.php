@@ -6,12 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 class Team extends Model
 {
     protected $fillable = ['name', 'size'];
-    public function add($user)
+
+
+    public function add($users)
     {
-        $this->guardAgainstTooManyMembers();
-        $method = $user instanceof User ? 'save' : 'saveMany';
-        $this->members()->$method($user);
+        $this->guardAgainstTooManyMembers($users);
+        $method = $users instanceof User ? 'save' : 'saveMany';
+        $this->members()->$method($users);
     }
+
+
+
     public function members()
     {
         return $this->hasMany(User::class);
@@ -30,18 +35,18 @@ class Team extends Model
     //   $user->leaveTeam();
     // });
       $userIds =$users->pluck('id');
-      $this->members()
+        $this->members()
         ->whereIn('id', $userIds)
         ->update(['team_id' => null]);
     }
 
     public function remove($users =null)
     {
-      if ($users instanceof User) {
-        return $users->leaveTeam();
-      }
+        if ($users instanceof User) {
+            return $users->leaveTeam();
+        }
 
-      return $this->removeMany($users);
+        return $this->removeMany($users);
     }
 
     public function restart($user =null)
@@ -49,9 +54,11 @@ class Team extends Model
         return $this->members()->update(['team_id' =>null]);
     }
 
-    protected function guardAgainstTooManyMembers()
+    protected function guardAgainstTooManyMembers($users)
     {
-        if ($this->count() >= $this->size) {
+        $numUsersToAdd =( $users instanceof User) ? 1 :  $users->count();
+        $newTeamCount = $this->count() + $numUsersToAdd;
+        if ($newTeamCount > $this->size) {
             throw new \Exception();
         }
     }
