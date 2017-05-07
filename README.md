@@ -14,3 +14,6 @@ https://github.com/laracasts/Hands-On-Testing-Workflow
   factory(User::class)->create();
   \Auth::login($user);
   \Auth::id()
+
+- MAIL_DRIVER=smtp
+  MAIL_DRIVER=log
